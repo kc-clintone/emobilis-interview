@@ -10,13 +10,19 @@ def create_post(request):
         content = request.POST.get('content')
         Post.objects.create(content=content, author=request.user)
         return redirect('home')
-    return render(request, 'create_post.html')
+    return render(request, 'home.html')
 
 def post_list(request):
     posts = Post.objects.all().order_by('-created_at')
     return render(request, 'home.html', {'posts': posts})
 
-
+def like_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect('home')
 
 
 def signup(request):
@@ -31,9 +37,7 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 def login_view(request):
-    # Implement login logic
     pass
 def logout_view(request):
-    # Implement logout logic
     pass
 
