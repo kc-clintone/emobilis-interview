@@ -11,8 +11,22 @@
         <div>
             <p>{{ post.content }}</p>
             <small>Posted by {{ post.author.username }} at {{ post.created_at }}</small>
-            <!-- Add buttons for like and comment -->
+            
         </div>
     {% endfor %}
+   <div>
+    {% for post in posts %}
+        <p>{{ post.content }}</p>
+        <p>Likes: {{ post.likes.count }}</p>
+        <a href="{% url 'like_post' post.id %}">
+            {% if request.user in post.likes.all %}
+                Unlike
+            {% else %}
+                Like
+            {% endif %}
+        </a>
+        <small>Posted by {{ post.author.username }}</small>
+    {% endfor %}
+</div>
 </div>
 
